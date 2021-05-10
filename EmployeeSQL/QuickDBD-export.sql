@@ -2,70 +2,72 @@
 -- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
 
 
-CREATE TABLE "Departments" (
-    "dept_no" varchar   NOT NULL,
-    "dept_name" varchar   NOT NULL,
-    CONSTRAINT "pk_Departments" PRIMARY KEY (
-        "dept_no"
-     )
+DROP TABLE employees;
+	
+CREATE TABLE employees (
+	emp_no INT PRIMARY KEY,
+	emp_title_id VARCHAR,  
+	birth_date DATE NOT NULL,
+	first_name VARCHAR NOT NULL,
+	last_name VARCHAR NOT NULL,
+	sex VARCHAR NOT NULL,
+	hire_date DATE NOT NULL
 );
 
-CREATE TABLE "Dept_Emp" (
-    "emp_no" INT   NOT NULL,
-    "dept_no" varchar   NOT NULL,
-    "from_date" date   NOT NULL,
-    "to_date" date   NOT NULL
+DROP TABLE departments;
+
+CREATE TABLE departments (
+    dept_no varchar   NOT NULL PRIMARY KEY,
+    dept_name varchar   NOT NULL
 );
 
-CREATE TABLE "Employees" (
-    "emp_no" INT   NOT NULL,
-    "birth_date" date   NOT NULL,
-    "first_name" varchar   NOT NULL,
-    "last_name" varchar   NOT NULL,
-    "sex" varchar(1)   NOT NULL,
-    "hire_date" date   NOT NULL,
-    CONSTRAINT "pk_Employees" PRIMARY KEY (
-        "emp_no"
-     )
+DROP TABLE dept_emp;
+
+CREATE TABLE dept_emp (
+    emp_no INT   NOT NULL,
+    dept_no varchar   NOT NULL,
+	FOREIGN KEY (emp_no) REFERENCES employees (emp_no),
+	FOREIGN KEY (dept_no) REFERENCES departments (dept_no)
 );
 
-CREATE TABLE "Dept_Manager" (
-    "dept_no" varchar   NOT NULL,
-    "dept_name" varchar   NOT NULL,
-    "emp_no" INT   NOT NULL,
-    "from_date" date   NOT NULL,
-    "to_date" date   NOT NULL
+DROP TABLE dept_manager;
+
+CREATE TABLE dept_manager (
+    dept_no varchar   NOT NULL,
+    emp_no INT   NOT NULL,
+	FOREIGN KEY (dept_no) REFERENCES departments (dept_no),
+	FOREIGN KEY (emp_no) REFERENCES employees (emp_no)
 );
 
-CREATE TABLE "Salaries" (
-    "emp_no" INT   NOT NULL,
-    "salary" INT   NOT NULL,
-    "from_date" date   NOT NULL,
-    "to_date" date   NOT NULL
+DROP TABLE salaries;
+
+CREATE TABLE salaries (
+    emp_no INT   NOT NULL,
+    salary INT   NOT NULL,
+	FOREIGN KEY (emp_no) REFERENCES employees(emp_no)
 );
 
-CREATE TABLE "Titles" (
-    "emp_no" INT   NOT NULL,
-    "title" varchar   NOT NULL,
-    "from_date" date   NOT NULL,
-    "to_date" date   NOT NULL
+DROP TABLE titles;
+
+CREATE TABLE titles (
+    title_id varchar   NOT NULL,
+    title varchar   NOT NULL
 );
 
-ALTER TABLE "Dept_Emp" ADD CONSTRAINT "fk_Dept_Emp_emp_no" FOREIGN KEY("emp_no")
-REFERENCES "Employees" ("emp_no");
+SELECT *
+FROM employees
 
-ALTER TABLE "Dept_Emp" ADD CONSTRAINT "fk_Dept_Emp_dept_no" FOREIGN KEY("dept_no")
-REFERENCES "Departments" ("dept_no");
+SELECT *
+FROM departments
 
-ALTER TABLE "Dept_Manager" ADD CONSTRAINT "fk_Dept_Manager_dept_no" FOREIGN KEY("dept_no")
-REFERENCES "Departments" ("dept_no");
+SELECT *
+FROM dept_emp
 
-ALTER TABLE "Dept_Manager" ADD CONSTRAINT "fk_Dept_Manager_emp_no" FOREIGN KEY("emp_no")
-REFERENCES "Employees" ("emp_no");
+SELECT *
+FROM dept_manager
 
-ALTER TABLE "Salaries" ADD CONSTRAINT "fk_Salaries_emp_no" FOREIGN KEY("emp_no")
-REFERENCES "Employees" ("emp_no");
+SELECT *
+FROM salaries
 
-ALTER TABLE "Titles" ADD CONSTRAINT "fk_Titles_emp_no" FOREIGN KEY("emp_no")
-REFERENCES "Employees" ("emp_no");
-
+SELECT *
+FROM titles
